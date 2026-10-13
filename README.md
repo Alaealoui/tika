@@ -102,8 +102,7 @@ La génération a pris 38 minutes et 42 secondes, de 2 h 43 à 3 h 21.
 
 ### Où sont les tests générés?
 
-Le plugin écrit ses fichiers dans un dossier chatunitest-tests de tika-core. Nous ne l'avons pas mis dans le dépôt, parce que ces fichiers cassent la construction. Le seul test généré que nous gardons est celui de la méthode clean, après corrections, dans le fichier CharsetUtilsGeneratedTest. Nous avons gardé de côté les messages d'erreur et l'historique des échanges avec le modèle.
-Sur InputStreamDigester, aucun test ne compile. Sur CharsetUtils, seul le test de clean compile, mais il a quand même demandé 10 corrections.
+Les fichiers bruts produits par ChatUniTest sont dans le dossier preuves-chatunitest, à la racine du dépôt. Il contient les messages d'erreur de compilation de chaque tentative, qui montrent aussi le code généré, et le fichier brut de 6 tests pour la méthode clean, avant nos corrections. 
 
 ## Étape 4
 
