@@ -1,0 +1,106 @@
+package org.apache.tika.digest;
+
+import java.io.IOException;
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
+import java.util.HashMap;
+import org.apache.tika.digest.DigestSink;
+import org.apache.tika.digest.InputStreamDigester;
+import org.apache.tika.digest.Encoder;
+import org.apache.tika.metadata.Metadata;
+import org.apache.tika.metadata.Property;
+import org.apache.tika.metadata.TikaCoreProperties;
+import org.apache.tika.parser.ParseContext;
+import org.apache.tika.utils.StringUtils;
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.junit.jupiter.MockitoExtension;
+import org.mockito.*;
+import org.junit.jupiter.api.*;
+import static org.mockito.Mockito.*;
+import static org.junit.jupiter.api.Assertions.*;
+import java.security.Provider;
+import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
+import org.apache.tika.io.CacheMemoryBudget;
+import org.apache.tika.io.TikaInputStream;
+import org.apache.tika.metadata.HttpHeaders;
+
+@ExtendWith(MockitoExtension.class)
+public class InputStreamDigester_digestSink_5_0_Test {
+
+    private InputStreamDigester digester;
+
+    private Metadata metadata;
+
+    private ParseContext parseContext;
+
+    private Encoder encoder;
+
+    @BeforeEach
+    public void setUp() {
+        metadata = new Metadata();
+        parseContext = new ParseContext();
+        encoder = mock(Encoder.class);
+        digester = new InputStreamDigester("SHA-256", "digest", encoder);
+    }
+
+    @Test
+    public void testDigestSink() throws IOException {
+        // Create a mock OutputStream for testing
+        OutputStream mockOutputStream = mock(OutputStream.class);
+        // Create a DigestSink instance
+        DigestSink sink = digester.digestSink(metadata, parseContext);
+        // Write some data to the sink
+        sink.write(1, new byte[] { 1, 2, 3 });
+        sink.write(4, new byte[] { 4, 5, 6 });
+        // Finish the sink
+        sink.finish(true);
+        // Verify that the digest was correctly set in the metadata
+        String expectedDigest = "sha256-1234567890abcdef1234567890abcdef1234567890abcdef1234567890abcdef";
+        assertEquals(expectedDigest, metadata.get(digester.metadataProperty.getName()));
+        // Verify that the content length was set in the metadata
+        assertEquals("6", metadata.get(HttpHeaders.CONTENT_LENGTH));
+        // Verify that the encoder encode method was called with the correct message digest
+        verify(encoder).encode(any(byte[].class));
+    }
+
+    private static Property mintProperty(String key) {
+        return new Property(key);
+    }
+}
+
+--------------------------------------------
+Error in InputStreamDigester_digestSink_5_0_Test: line 50 : cannot find symbol
+  symbol:   class OutputStream
+  location: class org.apache.tika.digest.InputStreamDigester_digestSink_5_0_Test
+Error in InputStreamDigester_digestSink_5_0_Test: line 50 : cannot find symbol
+  symbol:   class OutputStream
+  location: class org.apache.tika.digest.InputStreamDigester_digestSink_5_0_Test
+Error in InputStreamDigester_digestSink_5_0_Test: line 54 : no suitable method found for write(int,byte[])
+    method java.io.OutputStream.write(int) is not applicable
+      (actual and formal argument lists differ in length)
+    method java.io.OutputStream.write(byte[]) is not applicable
+      (actual and formal argument lists differ in length)
+    method java.io.OutputStream.write(byte[],int,int) is not applicable
+      (actual and formal argument lists differ in length)
+Error in InputStreamDigester_digestSink_5_0_Test: line 55 : no suitable method found for write(int,byte[])
+    method java.io.OutputStream.write(int) is not applicable
+      (actual and formal argument lists differ in length)
+    method java.io.OutputStream.write(byte[]) is not applicable
+      (actual and formal argument lists differ in length)
+    method java.io.OutputStream.write(byte[],int,int) is not applicable
+      (actual and formal argument lists differ in length)
+Error in InputStreamDigester_digestSink_5_0_Test: line 60 : metadataProperty has private access in org.apache.tika.digest.InputStreamDigester
+Error in InputStreamDigester_digestSink_5_0_Test: line 68 : no suitable constructor found for Property(java.lang.String)
+    constructor org.apache.tika.metadata.Property.Property(java.lang.String,boolean,org.apache.tika.metadata.Property.PropertyType,org.apache.tika.metadata.Property.ValueType,java.lang.String[],org.apache.tika.metadata.Property,org.apache.tika.metadata.Property[]) is not applicable
+      (actual and formal argument lists differ in length)
+    constructor org.apache.tika.metadata.Property.Property(java.lang.String,boolean,org.apache.tika.metadata.Property.PropertyType,org.apache.tika.metadata.Property.ValueType,java.lang.String[],org.apache.tika.metadata.Property,org.apache.tika.metadata.Property[],boolean) is not applicable
+      (actual and formal argument lists differ in length)
+    constructor org.apache.tika.metadata.Property.Property(java.lang.String,boolean,org.apache.tika.metadata.Property.PropertyType,org.apache.tika.metadata.Property.ValueType,java.lang.String[]) is not applicable
+      (actual and formal argument lists differ in length)
+    constructor org.apache.tika.metadata.Property.Property(java.lang.String,boolean,org.apache.tika.metadata.Property.ValueType,java.lang.String[]) is not applicable
+      (actual and formal argument lists differ in length)
+    constructor org.apache.tika.metadata.Property.Property(java.lang.String,boolean,org.apache.tika.metadata.Property.ValueType) is not applicable
+      (actual and formal argument lists differ in length)
+    constructor org.apache.tika.metadata.Property.Property(java.lang.String,boolean,org.apache.tika.metadata.Property.PropertyType,org.apache.tika.metadata.Property.ValueType) is not applicable
+      (actual and formal argument lists differ in length)

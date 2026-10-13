@@ -1,0 +1,121 @@
+package org.apache.tika.utils;
+
+import static org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.junit.jupiter.MockitoExtension;
+import org.mockito.*;
+import org.junit.jupiter.api.*;
+import static org.mockito.Mockito.*;
+import static org.junit.jupiter.api.Assertions.*;
+import org.junit.jupiter.api.extension.ExtendWith;
+import static java.util.Locale.ENGLISH;
+import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Method;
+import java.nio.charset.Charset;
+import java.nio.charset.IllegalCharsetNameException;
+import java.util.HashMap;
+import java.util.Locale;
+import java.util.Map;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+
+@ExtendWith(MockitoExtension.class)
+public class CharsetUtils_isSupported_1_0_Test {
+
+    @Mock
+    private Method getCharsetICU;
+
+    @Mock
+    private Method isSupportedICU;
+
+    @BeforeEach
+    public void setUp() {
+        MockitoAnnotations.openMocks(this);
+        CharsetUtils.getCharsetICU = getCharsetICU;
+        CharsetUtils.isSupportedICU = isSupportedICU;
+    }
+
+    @Test
+    public void testIsSupported_WithSupportedCharset() throws Exception {
+        // Arrange
+        when(isSupportedICU.invoke(null, "UTF-8")).thenReturn(true);
+        when(Charset.isSupported("UTF-8")).thenReturn(true);
+        // Act
+        boolean result = CharsetUtils.isSupported("UTF-8");
+        // Assert
+        assertTrue(result);
+    }
+
+    @Test
+    public void testIsSupported_WithUnsupportedCharset() throws Exception {
+        // Arrange
+        when(isSupportedICU.invoke(null, "UTF-16")).thenReturn(false);
+        when(Charset.isSupported("UTF-16")).thenReturn(false);
+        // Act
+        boolean result = CharsetUtils.isSupported("UTF-16");
+        // Assert
+        assertFalse(result);
+    }
+
+    @Test
+    public void testIsSupported_WithICUSupport() throws Exception {
+        // Arrange
+        when(isSupportedICU.invoke(null, "UTF-8")).thenReturn(true);
+        when(isSupportedICU.invoke(null, "UTF-16")).thenReturn(false);
+        when(Charset.isSupported("UTF-16")).thenReturn(false);
+        // Act
+        boolean result = CharsetUtils.isSupported("UTF-8");
+        // Assert
+        assertTrue(result);
+    }
+
+    @Test
+    public void testIsSupported_WithICUNotSupport() throws Exception {
+        // Arrange
+        when(isSupportedICU.invoke(null, "UTF-8")).thenReturn(false);
+        when(isSupportedICU.invoke(null, "UTF-16")).thenReturn(false);
+        when(Charset.isSupported("UTF-16")).thenReturn(false);
+        // Act
+        boolean result = CharsetUtils.isSupported("UTF-16");
+        // Assert
+        assertFalse(result);
+    }
+
+    @Test
+    public void testIsSupported_WithIllegalCharsetNameException() throws Exception {
+        // Arrange
+        when(isSupportedICU.invoke(null, "Invalid charset name")).thenReturn(false);
+        when(Charset.isSupported("Invalid charset name")).thenThrow(IllegalCharsetNameException.class);
+        // Act
+        boolean result = CharsetUtils.isSupported("Invalid charset name");
+        // Assert
+        assertFalse(result);
+    }
+
+    @Test
+    public void testIsSupported_WithIllegalArgumentException() throws Exception {
+        // Arrange
+        when(isSupportedICU.invoke(null, null)).thenReturn(false);
+        when(Charset.isSupported(null)).thenReturn(false);
+        // Act
+        boolean result = CharsetUtils.isSupported(null);
+        // Assert
+        assertFalse(result);
+    }
+
+    @Test
+    public void testIsSupported_WithUnexpectedException() throws Exception {
+        // Arrange
+        when(isSupportedICU.invoke(null, "UTF-8")).thenReturn(false);
+        when(Charset.isSupported("UTF-8")).thenThrow(Exception.class);
+        // Act
+        boolean result = CharsetUtils.isSupported("UTF-8");
+        // Assert
+        assertFalse(result);
+    }
+}
+
+--------------------------------------------
+Error in CharsetUtils_isSupported_1_0_Test: line 3 : cannot find symbol
+  symbol:   class extension
+  location: package org.junit.jupiter.api
+Error in CharsetUtils_isSupported_1_0_Test: line 3 : static import only from classes and interfaces

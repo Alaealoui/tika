@@ -1,0 +1,151 @@
+package org.apache.tika.utils;
+
+import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Method;
+import java.nio.charset.Charset;
+import java.nio.charset.IllegalCharsetNameException;
+import java.util.HashMap;
+import java.util.Locale;
+import java.util.Map;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+import org.apache.tika.utils.CharsetUtils;
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.junit.jupiter.MockitoExtension;
+import static java.util.Locale.ENGLISH;
+import org.mockito.*;
+import org.junit.jupiter.api.*;
+import static org.mockito.Mockito.*;
+import static org.junit.jupiter.api.Assertions.*;
+
+@ExtendWith(MockitoExtension.class)
+public class CharsetUtils_forName_3_0_Test {
+
+    private CharsetUtils charsetUtils;
+
+    private Method getCharsetICU;
+
+    private Method isSupportedICU;
+
+    @BeforeEach
+    public void setUp() throws Exception {
+        charsetUtils = new CharsetUtils();
+        // Mock methods to handle ICU
+        getCharsetICU = CharsetUtils.class.getDeclaredMethod("getCharsetICU");
+        getCharsetICU.setAccessible(true);
+        isSupportedICU = CharsetUtils.class.getDeclaredMethod("isSupportedICU");
+        isSupportedICU.setAccessible(true);
+    }
+
+    @Test
+    public void testForNameNull() {
+        assertThrows(IllegalArgumentException.class, () -> charsetUtils.forName(null));
+    }
+
+    @Test
+    public void testForNameLowerCaseWithQuotes() {
+        assertThrows(IllegalCharsetNameException.class, () -> charsetUtils.forName("\"utf-8\""));
+    }
+
+    @Test
+    public void testForNameLowerCaseWithSpaces() {
+        assertThrows(IllegalCharsetNameException.class, () -> charsetUtils.forName("utf 8"));
+    }
+
+    @Test
+    public void testForNameCommonCharset() {
+        Charset charset = charsetUtils.forName("utf-8");
+        assertNotNull(charset);
+        assertEquals("UTF-8", charset.name());
+    }
+
+    @Test
+    public void testForNameLowerCaseWithComma() {
+        assertThrows(IllegalCharsetNameException.class, () -> charsetUtils.forName("utf,8"));
+    }
+
+    @Test
+    public void testForNameUpperCaseWithComma() {
+        assertThrows(IllegalCharsetNameException.class, () -> charsetUtils.forName("UTF,8"));
+    }
+
+    @Test
+    public void testForNameUpperCaseWithBackslash() {
+        assertThrows(IllegalCharsetNameException.class, () -> charsetUtils.forName("utf\\-8"));
+    }
+
+    @Test
+    public void testForNameLowerCase() {
+        assertThrows(IllegalCharsetNameException.class, () -> charsetUtils.forName("utf8"));
+    }
+
+    @Test
+    public void testForNameLowerCaseWithSemicolon() {
+        assertThrows(IllegalCharsetNameException.class, () -> charsetUtils.forName("utf;8"));
+    }
+
+    @Test
+    public void testForNameUpperCaseWithQuestionMark() {
+        assertThrows(IllegalCharsetNameException.class, () -> charsetUtils.forName("UTF?8"));
+    }
+
+    @Test
+    public void testForNameUpperCase() {
+        assertThrows(IllegalCharsetNameException.class, () -> charsetUtils.forName("UTF8"));
+    }
+
+    @Test
+    public void testForNameInvalidName() {
+        assertThrows(IllegalCharsetNameException.class, () -> charsetUtils.forName("invalid-name"));
+    }
+
+    @Test
+    public void testForNameUpperCaseWithQuotes() {
+        assertThrows(IllegalCharsetNameException.class, () -> charsetUtils.forName("\"invalid-name\""));
+    }
+
+    @Test
+    public void testForNameUpperCaseWithSpaces() {
+        assertThrows(IllegalCharsetNameException.class, () -> charsetUtils.forName("invalid name"));
+    }
+
+    @Test
+    public void testForNameUpperCaseWithSemicolon() {
+        assertThrows(IllegalCharsetNameException.class, () -> charsetUtils.forName("invalid;name"));
+    }
+
+    @Test
+    public void testForNameEmpty() {
+        assertThrows(IllegalArgumentException.class, () -> charsetUtils.forName(""));
+    }
+
+    @Test
+    public void testForNameLowerCaseWithBackslash() {
+        assertThrows(IllegalCharsetNameException.class, () -> charsetUtils.forName("utf\\-8"));
+    }
+
+    @Test
+    public void testForNameLowerCaseWithQuestionMark() {
+        assertThrows(IllegalCharsetNameException.class, () -> charsetUtils.forName("utf?8"));
+    }
+}
+
+--------------------------------------------
+Error in testForNameNull(): line 34 : java.lang.NoSuchMethodException: org.apache.tika.utils.CharsetUtils.getCharsetICU()
+Error in testForNameLowerCaseWithQuotes(): line 34 : java.lang.NoSuchMethodException: org.apache.tika.utils.CharsetUtils.getCharsetICU()
+Error in testForNameLowerCaseWithSpaces(): line 34 : java.lang.NoSuchMethodException: org.apache.tika.utils.CharsetUtils.getCharsetICU()
+Error in testForNameCommonCharset(): line 34 : java.lang.NoSuchMethodException: org.apache.tika.utils.CharsetUtils.getCharsetICU()
+Error in testForNameLowerCaseWithComma(): line 34 : java.lang.NoSuchMethodException: org.apache.tika.utils.CharsetUtils.getCharsetICU()
+Error in testForNameUpperCaseWithComma(): line 34 : java.lang.NoSuchMethodException: org.apache.tika.utils.CharsetUtils.getCharsetICU()
+Error in testForNameUpperCaseWithBackslash(): line 34 : java.lang.NoSuchMethodException: org.apache.tika.utils.CharsetUtils.getCharsetICU()
+Error in testForNameLowerCase(): line 34 : java.lang.NoSuchMethodException: org.apache.tika.utils.CharsetUtils.getCharsetICU()
+Error in testForNameLowerCaseWithSemicolon(): line 34 : java.lang.NoSuchMethodException: org.apache.tika.utils.CharsetUtils.getCharsetICU()
+Error in testForNameUpperCaseWithQuestionMark(): line 34 : java.lang.NoSuchMethodException: org.apache.tika.utils.CharsetUtils.getCharsetICU()
+Error in testForNameUpperCase(): line 34 : java.lang.NoSuchMethodException: org.apache.tika.utils.CharsetUtils.getCharsetICU()
+Error in testForNameInvalidName(): line 34 : java.lang.NoSuchMethodException: org.apache.tika.utils.CharsetUtils.getCharsetICU()
+Error in testForNameUpperCaseWithQuotes(): line 34 : java.lang.NoSuchMethodException: org.apache.tika.utils.CharsetUtils.getCharsetICU()
+Error in testForNameUpperCaseWithSpaces(): line 34 : java.lang.NoSuchMethodException: org.apache.tika.utils.CharsetUtils.getCharsetICU()
+Error in testForNameUpperCaseWithSemicolon(): line 34 : java.lang.NoSuchMethodException: org.apache.tika.utils.CharsetUtils.getCharsetICU()
+Error in testForNameEmpty(): line 34 : java.lang.NoSuchMethodException: org.apache.tika.utils.CharsetUtils.getCharsetICU()
+Error in testForNameLowerCaseWithBackslash(): line 34 : java.lang.NoSuchMethodException: org.apache.tika.utils.CharsetUtils.getCharsetICU()
+Error in testForNameLowerCaseWithQuestionMark(): line 34 : java.lang.NoSuchMethodException: org.apache.tika.utils.CharsetUtils.getCharsetICU()

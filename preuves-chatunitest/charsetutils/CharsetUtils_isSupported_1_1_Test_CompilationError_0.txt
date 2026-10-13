@@ -1,0 +1,108 @@
+package org.apache.tika.utils;
+
+import static java.util.Locale.ENGLISH;
+import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Method;
+import java.nio.charset.Charset;
+import java.nio.charset.IllegalCharsetNameException;
+import java.util.HashMap;
+import java.util.Locale;
+import java.util.Map;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.junit.jupiter.MockitoExtension;
+import org.mockito.*;
+import org.junit.jupiter.api.*;
+import static org.mockito.Mockito.*;
+import static org.junit.jupiter.api.Assertions.*;
+
+@ExtendWith(MockitoExtension.class)
+public class CharsetUtils_isSupported_1_1_Test {
+
+    @Mock
+    private Method getCharsetICU;
+
+    @Mock
+    private Method isSupportedICU;
+
+    private CharsetUtils charsetUtils;
+
+    @BeforeEach
+    public void setUp() {
+        MockitoAnnotations.initMocks(this);
+        charsetUtils = new CharsetUtils();
+        charsetUtils.getCharsetICU = getCharsetICU;
+        charsetUtils.isSupportedICU = isSupportedICU;
+    }
+
+    @Test
+    public void testIsSupported_ValidCharsetName() throws IllegalAccessException, InvocationTargetException {
+        when(getCharsetICU.invoke(null, "UTF-8")).thenReturn(true);
+        when(isSupportedICU.invoke(null, "UTF-8")).thenReturn(false);
+        boolean result = charsetUtils.isSupported("UTF-8");
+        assertTrue(result, "UTF-8 should be supported by ICU");
+    }
+
+    @Test
+    public void testIsSupported_InvalidCharsetName() throws IllegalAccessException, InvocationTargetException {
+        when(getCharsetICU.invoke(null, "invalid-charset")).thenReturn(false);
+        when(isSupportedICU.invoke(null, "invalid-charset")).thenReturn(false);
+        boolean result = charsetUtils.isSupported("invalid-charset");
+        assertFalse(result, "Invalid charset name should not be supported by ICU or native");
+    }
+
+    @Test
+    public void testIsSupported_UnknownCharsetName() throws IllegalAccessException, InvocationTargetException {
+        when(getCharsetICU.invoke(null, "unknown-charset")).thenReturn(false);
+        when(isSupportedICU.invoke(null, "unknown-charset")).thenReturn(false);
+        boolean result = charsetUtils.isSupported("unknown-charset");
+        assertFalse(result, "Unknown charset name should not be supported by ICU or native");
+    }
+
+    @Test
+    public void testIsSupported_NullCharsetName() throws IllegalAccessException, InvocationTargetException {
+        when(getCharsetICU.invoke(null, (String) null)).thenReturn(false);
+        when(isSupportedICU.invoke(null, (String) null)).thenReturn(false);
+        boolean result = charsetUtils.isSupported(null);
+        assertFalse(result, "Null charset name should not be supported by ICU or native");
+    }
+
+    @Test
+    public void testIsSupported_EmptyCharsetName() throws IllegalAccessException, InvocationTargetException {
+        when(getCharsetICU.invoke(null, "")).thenReturn(false);
+        when(isSupportedICU.invoke(null, "")).thenReturn(false);
+        boolean result = charsetUtils.isSupported("");
+        assertFalse(result, "Empty charset name should not be supported by ICU or native");
+    }
+
+    @Test
+    public void testIsSupported_InvalidException() throws IllegalAccessException, InvocationTargetException {
+        when(getCharsetICU.invoke(null, "invalid-charset")).thenReturn(false);
+        when(isSupportedICU.invoke(null, "invalid-charset")).thenThrow(new IllegalArgumentException("Invalid charset name"));
+        boolean result = charsetUtils.isSupported("invalid-charset");
+        assertFalse(result, "Invalid charset name should not be supported by ICU or native");
+    }
+
+    @Test
+    public void testIsSupported_IllegalCharsetNameException() throws IllegalAccessException, InvocationTargetException {
+        when(getCharsetICU.invoke(null, "invalid-charset")).thenReturn(false);
+        when(isSupportedICU.invoke(null, "invalid-charset")).thenThrow(new IllegalCharsetNameException("Invalid charset name"));
+        boolean result = charsetUtils.isSupported("invalid-charset");
+        assertFalse(result, "Invalid charset name should not be supported by ICU or native");
+    }
+
+    @Test
+    public void testIsSupported_UnexpectedException() throws IllegalAccessException, InvocationTargetException {
+        when(getCharsetICU.invoke(null, "invalid-charset")).thenReturn(false);
+        when(isSupportedICU.invoke(null, "invalid-charset")).thenThrow(new RuntimeException("Unexpected exception"));
+        boolean result = charsetUtils.isSupported("invalid-charset");
+        assertFalse(result, "Unexpected exception should not be handled by ICU or native");
+    }
+}
+
+--------------------------------------------
+Error in CharsetUtils_isSupported_1_1_Test: line 35 : getCharsetICU has private access in org.apache.tika.utils.CharsetUtils
+Error in CharsetUtils_isSupported_1_1_Test: line 36 : isSupportedICU has private access in org.apache.tika.utils.CharsetUtils
+Error in CharsetUtils_isSupported_1_1_Test: line -1 : CharsetUtils_isSupported_1_1_Test.java uses or overrides a deprecated API.
+Error in CharsetUtils_isSupported_1_1_Test: line -1 : Recompile with -Xlint:deprecation for details.

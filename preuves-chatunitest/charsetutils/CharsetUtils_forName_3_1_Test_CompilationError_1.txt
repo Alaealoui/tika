@@ -1,0 +1,123 @@
+package org.apache.tika.utils;
+
+import static java.util.Locale.ENGLISH;
+import static org.junit.jupiter.api.extension.ExtendWith;
+import java.lang.reflect.Method;
+import java.nio.charset.Charset;
+import java.nio.charset.IllegalCharsetNameException;
+import java.util.HashMap;
+import java.util.Locale;
+import java.util.Map;
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.junit.jupiter.MockitoExtension;
+import java.lang.reflect.InvocationTargetException;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+import org.mockito.*;
+import org.junit.jupiter.api.*;
+import static org.mockito.Mockito.*;
+import static org.junit.jupiter.api.Assertions.*;
+
+@ExtendWith(MockitoExtension.class)
+public class CharsetUtils_forName_3_1_Test {
+
+    @Mock
+    private Method getCharsetICU;
+
+    @Mock
+    private Method isSupportedICU;
+
+    @BeforeEach
+    public void setUp() {
+        MockitoAnnotations.openMocks(this);
+        CharsetUtils.getCharsetICU = getCharsetICU;
+        CharsetUtils.isSupportedICU = isSupportedICU;
+    }
+
+    @Test
+    public void testForNameWithNullInput() {
+        assertThrows(IllegalArgumentException.class, () -> CharsetUtils.forName(null));
+    }
+
+    @Test
+    public void testForNameWithEmptyString() {
+        assertThrows(IllegalCharsetNameException.class, () -> CharsetUtils.forName(""));
+    }
+
+    @Test
+    public void testForNameWithInvalidCharset() {
+        assertThrows(IllegalCharsetNameException.class, () -> CharsetUtils.forName("invalidCharset"));
+    }
+
+    @Test
+    public void testForNameWithCommonCharset() {
+        CharsetUtils.COMMON_CHARSETS.put("utf-8", Charset.forName("utf-8"));
+        assertEquals(Charset.forName("utf-8"), CharsetUtils.forName("utf-8"));
+    }
+
+    @Test
+    public void testForNameWithLowerCaseCharset() {
+        CharsetUtils.COMMON_CHARSETS.put("utf-8", Charset.forName("utf-8"));
+        assertEquals(Charset.forName("utf-8"), CharsetUtils.forName("utf-8"));
+    }
+
+    @Test
+    public void testForNameWithUpperCaseCharset() {
+        CharsetUtils.COMMON_CHARSETS.put("UTF-8", Charset.forName("utf-8"));
+        assertEquals(Charset.forName("utf-8"), CharsetUtils.forName("UTF-8"));
+    }
+
+    @Test
+    public void testForNameWithMixedCaseCharset() {
+        CharsetUtils.COMMON_CHARSETS.put("UTF-8", Charset.forName("utf-8"));
+        assertEquals(Charset.forName("utf-8"), CharsetUtils.forName("uTf-8"));
+    }
+
+    @Test
+    public void testForNameWithInvalidICUCharset() {
+        when(getCharsetICU.invoke(null, "invalidCharset")).thenReturn(null);
+        assertThrows(IllegalCharsetNameException.class, () -> CharsetUtils.forName("invalidCharset"));
+    }
+
+    @Test
+    public void testForNameWithValidICUCharset() throws InvocationTargetException, IllegalAccessException {
+        when(getCharsetICU.invoke(null, "utf-8")).thenReturn(Charset.forName("utf-8"));
+        assertEquals(Charset.forName("utf-8"), CharsetUtils.forName("utf-8"));
+    }
+
+    @Test
+    public void testForNameWithInvalidICUCharsetNoMethod() {
+        when(getCharsetICU.invoke(null, "utf-8")).thenReturn(null);
+        assertThrows(IllegalCharsetNameException.class, () -> CharsetUtils.forName("utf-8"));
+    }
+
+    @Test
+    public void testForNameWithInvalidICUCharsetMethodException() {
+        when(getCharsetICU.invoke(null, "utf-8")).thenThrow(new IllegalAccessException());
+        assertThrows(IllegalCharsetNameException.class, () -> CharsetUtils.forName("utf-8"));
+    }
+
+    @Test
+    public void testForNameWithInvalidICUCharsetIllegalArgumentException() {
+        when(getCharsetICU.invoke(null, "utf-8")).thenThrow(new IllegalArgumentException());
+        assertThrows(IllegalCharsetNameException.class, () -> CharsetUtils.forName("utf-8"));
+    }
+
+    @Test
+    public void testForNameWithInvalidICUCharsetInvocationTargetException() {
+        when(getCharsetICU.invoke(null, "utf-8")).thenThrow(new InvocationTargetException(new Exception()));
+        assertThrows(IllegalCharsetNameException.class, () -> CharsetUtils.forName("utf-8"));
+    }
+
+    @Test
+    public void testForNameWithInvalidICUCharsetUnsupportedException() {
+        when(getCharsetICU.invoke(null, "utf-8")).thenThrow(new UnsupportedOperationException());
+        assertThrows(IllegalCharsetNameException.class, () -> CharsetUtils.forName("utf-8"));
+    }
+}
+
+--------------------------------------------
+Error in CharsetUtils_forName_3_1_Test: line 4 : cannot find symbol
+  symbol:   class extension
+  location: package org.junit.jupiter.api
+Error in CharsetUtils_forName_3_1_Test: line 4 : static import only from classes and interfaces

@@ -1,0 +1,217 @@
+package org.apache.tika.digest;
+
+import java.io.ByteArrayInputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
+import java.util.HashMap;
+import java.util.Map;
+import org.apache.tika.digest.Encoder;
+import org.apache.tika.digest.InputStreamDigester;
+import org.apache.tika.io.TikaInputStream;
+import org.apache.tika.metadata.HttpHeaders;
+import org.apache.tika.metadata.Metadata;
+import org.apache.tika.metadata.TikaCoreProperties;
+import org.apache.tika.parser.ParseContext;
+import org.apache.tika.utils.StringUtils;
+import org.mockito.*;
+import org.junit.jupiter.api.*;
+import static org.mockito.Mockito.*;
+import static org.junit.jupiter.api.Assertions.*;
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.junit.jupiter.MockitoExtension;
+import java.security.Provider;
+import java.util.concurrent.ConcurrentHashMap;
+import org.apache.tika.io.CacheMemoryBudget;
+import org.apache.tika.metadata.Property;
+
+public class InputStreamDigester_digest_4_1_Test {
+
+    private InputStreamDigester digester;
+
+    private TikaInputStream tis;
+
+    private Metadata metadata;
+
+    private ParseContext parseContext;
+
+    private Encoder encoder;
+
+    @BeforeEach
+    public void setUp() throws IOException {
+        // Mock dependencies
+        encoder = mock(Encoder.class);
+        parseContext = mock(ParseContext.class);
+        tis = mock(TikaInputStream.class);
+        metadata = mock(Metadata.class);
+        // Initialize the digester
+        digester = new InputStreamDigester("SHA-256", "digest", encoder);
+    }
+
+    @Test
+    public void testDigestValidInput() throws IOException, NoSuchAlgorithmException {
+        // Mock the behavior of TikaInputStream
+        when(tis.read(any(byte[].class))).thenReturn(10, 20, 30, -1);
+        when(tis.getLength()).thenReturn(60L);
+        // Call the digest method
+        digester.digest(tis, metadata, parseContext);
+        // Verify the behavior of the digester
+        verify(encoder).encode(argThat(this::isSha256Digest));
+        verify(metadata).set(eq("digest"), argThat(this::isSha256Digest));
+        verify(metadata).set(eq(TikaCoreProperties.CONTENT_LENGTH), eq("60"));
+    }
+
+    @Test
+    public void testDigestInvalidInput() throws IOException, NoSuchAlgorithmException {
+        // Mock the behavior of TikaInputStream
+        when(tis.read(any(byte[].class))).thenReturn(-1);
+        when(tis.getLength()).thenReturn(-1);
+        // Call the digest method
+        digester.digest(tis, metadata, parseContext);
+        // Verify the behavior of the digester
+        verify(encoder, never()).encode(any(byte[].class));
+        verify(metadata, never()).set(eq("digest"), any(byte[].class));
+        verify(metadata, never()).set(eq(TikaCoreProperties.CONTENT_LENGTH), eq("60"));
+    }
+
+    @Test
+    public void testDigestNoContentLength() throws IOException, NoSuchAlgorithmException {
+        // Mock the behavior of TikaInputStream
+        when(tis.read(any(byte[].class))).thenReturn(10, 20, 30, -1);
+        when(tis.getLength()).thenReturn(-1);
+        // Call the digest method
+        digester.digest(tis, metadata, parseContext);
+        // Verify the behavior of the digester
+        verify(encoder).encode(argThat(this::isSha256Digest));
+        verify(metadata).set(eq("digest"), argThat(this::isSha256Digest));
+        verify(metadata).set(eq(TikaCoreProperties.CONTENT_LENGTH), eq("60"));
+    }
+
+    @Test
+    public void testDigestNoContentLengthOrLength() throws IOException, NoSuchAlgorithmException {
+        // Mock the behavior of TikaInputStream
+        when(tis.read(any(byte[].class))).thenReturn(10, 20, 30, -1);
+        when(tis.getLength()).thenReturn(-1);
+        // Call the digest method
+        digester.digest(tis, metadata, parseContext);
+        // Verify the behavior of the digester
+        verify(encoder).encode(argThat(this::isSha256Digest));
+        verify(metadata).set(eq("digest"), argThat(this::isSha256Digest));
+        verify(metadata, never()).set(eq(TikaCoreProperties.CONTENT_LENGTH), eq("60"));
+    }
+
+    @Test
+    public void testDigestNoContentLengthOrLengthOrMetadata() throws IOException, NoSuchAlgorithmException {
+        // Mock the behavior of TikaInputStream
+        when(tis.read(any(byte[].class))).thenReturn(10, 20, 30, -1);
+        when(tis.getLength()).thenReturn(-1);
+        // Call the digest method
+        digester.digest(tis, metadata, parseContext);
+        // Verify the behavior of the digester
+        verify(encoder).encode(argThat(this::isSha256Digest));
+    }
+}
+
+--------------------------------------------
+Error in InputStreamDigester_digest_4_1_Test: line 60 : invalid method reference
+  cannot find symbol
+    symbol:   method isSha256Digest()
+    location: class org.apache.tika.digest.InputStreamDigester_digest_4_1_Test
+Error in InputStreamDigester_digest_4_1_Test: line 61 : invalid method reference
+  cannot find symbol
+    symbol:   method isSha256Digest()
+    location: class org.apache.tika.digest.InputStreamDigester_digest_4_1_Test
+Error in InputStreamDigester_digest_4_1_Test: line 62 : cannot find symbol
+  symbol:   variable CONTENT_LENGTH
+  location: interface org.apache.tika.metadata.TikaCoreProperties
+Error in InputStreamDigester_digest_4_1_Test: line 69 : no suitable method found for thenReturn(int)
+    method org.mockito.stubbing.OngoingStubbing.thenReturn(java.lang.Long) is not applicable
+      (argument mismatch; int cannot be converted to java.lang.Long)
+    method org.mockito.stubbing.OngoingStubbing.thenReturn(java.lang.Long,java.lang.Long...) is not applicable
+      (argument mismatch; int cannot be converted to java.lang.Long)
+Error in InputStreamDigester_digest_4_1_Test: line 74 : no suitable method found for set(java.lang.String,byte[])
+    method org.apache.tika.metadata.Metadata.set(java.lang.String,java.lang.String) is not applicable
+      (argument mismatch; inference variable T has incompatible bounds
+          equality constraints: byte[]
+          lower bounds: java.lang.String,java.lang.Object)
+    method org.apache.tika.metadata.Metadata.set(java.lang.String,java.lang.String[]) is not applicable
+      (argument mismatch; inference variable T has incompatible bounds
+          equality constraints: byte[]
+          lower bounds: java.lang.String[],java.lang.Object)
+    method org.apache.tika.metadata.Metadata.set(org.apache.tika.metadata.Property,java.lang.String) is not applicable
+      (argument mismatch; inference variable T has incompatible bounds
+          lower bounds: org.apache.tika.metadata.Property,java.lang.Object
+          lower bounds: java.lang.String)
+    method org.apache.tika.metadata.Metadata.set(org.apache.tika.metadata.Property,java.lang.String[]) is not applicable
+      (argument mismatch; inference variable T has incompatible bounds
+          lower bounds: org.apache.tika.metadata.Property,java.lang.Object
+          lower bounds: java.lang.String)
+    method org.apache.tika.metadata.Metadata.set(org.apache.tika.metadata.Property,int) is not applicable
+      (argument mismatch; inference variable T has incompatible bounds
+          lower bounds: org.apache.tika.metadata.Property,java.lang.Object
+          lower bounds: java.lang.String)
+    method org.apache.tika.metadata.Metadata.set(org.apache.tika.metadata.Property,long) is not applicable
+      (argument mismatch; inference variable T has incompatible bounds
+          lower bounds: org.apache.tika.metadata.Property,java.lang.Object
+          lower bounds: java.lang.String)
+    method org.apache.tika.metadata.Metadata.set(org.apache.tika.metadata.Property,boolean) is not applicable
+      (argument mismatch; inference variable T has incompatible bounds
+          lower bounds: org.apache.tika.metadata.Property,java.lang.Object
+          lower bounds: java.lang.String)
+    method org.apache.tika.metadata.Metadata.set(org.apache.tika.metadata.Property,double) is not applicable
+      (argument mismatch; inference variable T has incompatible bounds
+          lower bounds: org.apache.tika.metadata.Property,java.lang.Object
+          lower bounds: java.lang.String)
+    method org.apache.tika.metadata.Metadata.set(org.apache.tika.metadata.Property,java.util.Date) is not applicable
+      (argument mismatch; inference variable T has incompatible bounds
+          lower bounds: org.apache.tika.metadata.Property,java.lang.Object
+          lower bounds: java.lang.String)
+    method org.apache.tika.metadata.Metadata.set(org.apache.tika.metadata.Property,java.util.Calendar) is not applicable
+      (argument mismatch; inference variable T has incompatible bounds
+          lower bounds: org.apache.tika.metadata.Property,java.lang.Object
+          lower bounds: java.lang.String)
+Error in InputStreamDigester_digest_4_1_Test: line 75 : cannot find symbol
+  symbol:   variable CONTENT_LENGTH
+  location: interface org.apache.tika.metadata.TikaCoreProperties
+Error in InputStreamDigester_digest_4_1_Test: line 82 : no suitable method found for thenReturn(int)
+    method org.mockito.stubbing.OngoingStubbing.thenReturn(java.lang.Long) is not applicable
+      (argument mismatch; int cannot be converted to java.lang.Long)
+    method org.mockito.stubbing.OngoingStubbing.thenReturn(java.lang.Long,java.lang.Long...) is not applicable
+      (argument mismatch; int cannot be converted to java.lang.Long)
+Error in InputStreamDigester_digest_4_1_Test: line 86 : invalid method reference
+  cannot find symbol
+    symbol:   method isSha256Digest()
+    location: class org.apache.tika.digest.InputStreamDigester_digest_4_1_Test
+Error in InputStreamDigester_digest_4_1_Test: line 87 : invalid method reference
+  cannot find symbol
+    symbol:   method isSha256Digest()
+    location: class org.apache.tika.digest.InputStreamDigester_digest_4_1_Test
+Error in InputStreamDigester_digest_4_1_Test: line 88 : cannot find symbol
+  symbol:   variable CONTENT_LENGTH
+  location: interface org.apache.tika.metadata.TikaCoreProperties
+Error in InputStreamDigester_digest_4_1_Test: line 95 : no suitable method found for thenReturn(int)
+    method org.mockito.stubbing.OngoingStubbing.thenReturn(java.lang.Long) is not applicable
+      (argument mismatch; int cannot be converted to java.lang.Long)
+    method org.mockito.stubbing.OngoingStubbing.thenReturn(java.lang.Long,java.lang.Long...) is not applicable
+      (argument mismatch; int cannot be converted to java.lang.Long)
+Error in InputStreamDigester_digest_4_1_Test: line 99 : invalid method reference
+  cannot find symbol
+    symbol:   method isSha256Digest()
+    location: class org.apache.tika.digest.InputStreamDigester_digest_4_1_Test
+Error in InputStreamDigester_digest_4_1_Test: line 100 : invalid method reference
+  cannot find symbol
+    symbol:   method isSha256Digest()
+    location: class org.apache.tika.digest.InputStreamDigester_digest_4_1_Test
+Error in InputStreamDigester_digest_4_1_Test: line 101 : cannot find symbol
+  symbol:   variable CONTENT_LENGTH
+  location: interface org.apache.tika.metadata.TikaCoreProperties
+Error in InputStreamDigester_digest_4_1_Test: line 108 : no suitable method found for thenReturn(int)
+    method org.mockito.stubbing.OngoingStubbing.thenReturn(java.lang.Long) is not applicable
+      (argument mismatch; int cannot be converted to java.lang.Long)
+    method org.mockito.stubbing.OngoingStubbing.thenReturn(java.lang.Long,java.lang.Long...) is not applicable
+      (argument mismatch; int cannot be converted to java.lang.Long)
+Error in InputStreamDigester_digest_4_1_Test: line 112 : invalid method reference
+  cannot find symbol
+    symbol:   method isSha256Digest()
+    location: class org.apache.tika.digest.InputStreamDigester_digest_4_1_Test

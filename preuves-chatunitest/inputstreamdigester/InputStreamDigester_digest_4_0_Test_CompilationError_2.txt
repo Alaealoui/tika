@@ -1,0 +1,114 @@
+package org.apache.tika.digest;
+
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.junit.jupiter.MockitoExtension;
+import org.apache.tika.digest.Encoder;
+import org.apache.tika.digest.InputStreamDigester;
+import org.apache.tika.io.CacheMemoryBudget;
+import org.apache.tika.io.TikaInputStream;
+import org.apache.tika.metadata.HttpHeaders;
+import org.apache.tika.metadata.Metadata;
+import org.apache.tika.metadata.Property;
+import org.apache.tika.metadata.TikaCoreProperties;
+import org.apache.tika.parser.ParseContext;
+import org.apache.tika.utils.StringUtils;
+import java.io.IOException;
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
+import java.security.Provider;
+import java.util.concurrent.ConcurrentHashMap;
+import java.util.Arrays;
+import java.util.HashMap;
+import java.util.Map;
+import org.mockito.*;
+import org.junit.jupiter.api.*;
+import static org.mockito.Mockito.*;
+import static org.junit.jupiter.api.Assertions.*;
+
+@ExtendWith(MockitoExtension.class)
+public class InputStreamDigester_digest_4_0_Test {
+
+    @InjectMocks
+    private InputStreamDigester inputStreamDigester;
+
+    @Mock
+    private Encoder encoder;
+
+    @Mock
+    private ParseContext parseContext;
+
+    @Mock
+    private CacheMemoryBudget cacheMemoryBudget;
+
+    @Mock
+    private TikaInputStream tikaInputStream;
+
+    @BeforeEach
+    public void setUp() throws IOException {
+        inputStreamDigester = new InputStreamDigester("SHA-256", "sha256Digest", encoder);
+        tikaInputStream = new TikaInputStream(null, new TemporaryResources(), null);
+        tikaInputStream.setOpenContainer(tikaInputStream);
+    }
+
+    @Test
+    public void testDigest() throws IOException, NoSuchAlgorithmException {
+        when(tikaInputStream.read(any(byte[].class))).thenReturn(10, -1);
+        when(parseContext.get(CacheMemoryBudget.class)).thenReturn(cacheMemoryBudget);
+        inputStreamDigester.digest(tikaInputStream, new Metadata(), parseContext);
+        verify(tikaInputStream).enableRewind(cacheMemoryBudget);
+        verify(tikaInputStream).tryRetainInMemory();
+        verify(tikaInputStream).rewind();
+        verify(encoder).encode(any(byte[].class));
+        // Corrected method name
+        verify(tikaInputStream).seekTo(anyInt());
+        // Corrected method name
+        verify(tikaInputStream).setLength(anyLong());
+        verify(tikaInputStream).set(any(String.class));
+        verify(tikaInputStream).set(any(Property.class), any(String.class));
+        verify(tikaInputStream).set(any(Property.class), any(String[].class));
+        verify(tikaInputStream).set(any(Property.class), any(Integer.class));
+        verify(tikaInputStream).set(any(Property.class), any(Long.class));
+        verify(tikaInputStream).set(any(Property.class), any(Boolean.class));
+        verify(tikaInputStream).set(any(Property.class), any(Double.class));
+        // Corrected class name
+        verify(tikaInputStream).set(any(Property.class), any(Date.class));
+        // Corrected class name
+        verify(tikaInputStream).set(any(Property.class), any(Calendar.class));
+    }
+}
+
+--------------------------------------------
+Error in InputStreamDigester_digest_4_0_Test: line 49 : cannot find symbol
+  symbol:   class TemporaryResources
+  location: class org.apache.tika.digest.InputStreamDigester_digest_4_0_Test
+Error in InputStreamDigester_digest_4_0_Test: line 63 : cannot find symbol
+  symbol:   method seekTo(int)
+  location: class org.apache.tika.io.TikaInputStream
+Error in InputStreamDigester_digest_4_0_Test: line 65 : setLength(long) has private access in org.apache.tika.io.TikaInputStream
+Error in InputStreamDigester_digest_4_0_Test: line 66 : cannot find symbol
+  symbol:   method set(java.lang.String)
+  location: class org.apache.tika.io.TikaInputStream
+Error in InputStreamDigester_digest_4_0_Test: line 67 : cannot find symbol
+  symbol:   method set(org.apache.tika.metadata.Property,java.lang.String)
+  location: class org.apache.tika.io.TikaInputStream
+Error in InputStreamDigester_digest_4_0_Test: line 68 : cannot find symbol
+  symbol:   method set(org.apache.tika.metadata.Property,java.lang.String[])
+  location: class org.apache.tika.io.TikaInputStream
+Error in InputStreamDigester_digest_4_0_Test: line 69 : cannot find symbol
+  symbol:   method set(org.apache.tika.metadata.Property,java.lang.Integer)
+  location: class org.apache.tika.io.TikaInputStream
+Error in InputStreamDigester_digest_4_0_Test: line 70 : cannot find symbol
+  symbol:   method set(org.apache.tika.metadata.Property,java.lang.Long)
+  location: class org.apache.tika.io.TikaInputStream
+Error in InputStreamDigester_digest_4_0_Test: line 71 : cannot find symbol
+  symbol:   method set(org.apache.tika.metadata.Property,java.lang.Boolean)
+  location: class org.apache.tika.io.TikaInputStream
+Error in InputStreamDigester_digest_4_0_Test: line 72 : cannot find symbol
+  symbol:   method set(org.apache.tika.metadata.Property,java.lang.Double)
+  location: class org.apache.tika.io.TikaInputStream
+Error in InputStreamDigester_digest_4_0_Test: line 74 : cannot find symbol
+  symbol:   class Date
+  location: class org.apache.tika.digest.InputStreamDigester_digest_4_0_Test
+Error in InputStreamDigester_digest_4_0_Test: line 76 : cannot find symbol
+  symbol:   class Calendar
+  location: class org.apache.tika.digest.InputStreamDigester_digest_4_0_Test
