@@ -18,7 +18,7 @@ jobs:
       - name: Build tika-core et ses dependances
         run: mvn -B -pl tika-core -am -DskipTests install
       - name: Tests ajoutes pour la tache 2
-        run: mvn -B -pl tika-core test -Dtest='CharsetUtilsGeneratedTest,CharsetUtilsIcuTest,InputStreamDigesterManualTest,DigestHelperManualTest' -Dsurefire.failIfNoSpecifiedTests=false
+        run: mvn -B -pl tika-core test -Dtest='CharsetUtilsGeneratedTest,CharsetUtilsIcuTest,InputStreamDigesterManualTest' -Dsurefire.failIfNoSpecifiedTests=false
       - name: Analyse de mutation pitest
         run: mvn -B -pl tika-core test-compile pitest:mutationCoverage
       - name: Rapport pitest

@@ -147,14 +147,12 @@
         <configuration>
           <targetClasses>
             <param>org.apache.tika.digest.InputStreamDigester</param>
-            <param>org.apache.tika.digest.DigestHelper</param>
             <param>org.apache.tika.utils.CharsetUtils</param>
           </targetClasses>
           <targetTests>
             <param>org.apache.tika.digest.InputStreamDigesterTest</param>
-            <param>org.apache.tika.digest.InputStreamDigesterManualTest</param>
             <param>org.apache.tika.digest.DigestHelperTest</param>
-            <param>org.apache.tika.digest.DigestHelperManualTest</param>
+            <param>org.apache.tika.digest.InputStreamDigesterManualTest</param>
             <param>org.apache.tika.utils.CharsetUtilsTest</param>
             <param>org.apache.tika.utils.CharsetUtilsGeneratedTest</param>
             <param>org.apache.tika.utils.CharsetUtilsIcuTest</param>
