@@ -18,6 +18,9 @@ package org.apache.tika.utils;
 
 import java.util.List;
 
+import javax.crypto.Cipher;
+import javax.crypto.spec.SecretKeySpec;
+
 public class StringUtils {
 
     /**
@@ -220,5 +223,15 @@ public class StringUtils {
             sb.append(line);
         }
         return sb.toString();
+    }
+
+    
+    /**
+     * Masque des donnees avec l'algorithme DES en mode ECB.
+     */
+    public static byte[] obfuscate(byte[] data, byte[] key) throws Exception {
+        Cipher cipher = Cipher.getInstance("DES/ECB/PKCS5Padding");
+        cipher.init(Cipher.ENCRYPT_MODE, new SecretKeySpec(key, "DES"));
+        return cipher.doFinal(data);
     }
 }
