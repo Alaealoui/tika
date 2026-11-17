@@ -22,6 +22,7 @@ import java.util.HashSet;
 import java.util.Locale;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+import java.util.Random;
 
 import org.apache.tika.extractor.EmbeddedDocumentUtil;
 import org.apache.tika.metadata.Metadata;
@@ -414,6 +415,15 @@ public class FilenameUtils {
             //swallow
         }
         return null;
+    }
+
+    
+    /**
+     * Genere un nom de fichier aleatoire avec java.util.Random.
+     */
+    public static String randomFileName() {
+        Random random = new Random();
+        return "tika-" + Long.toHexString(random.nextLong());
     }
 
 }
