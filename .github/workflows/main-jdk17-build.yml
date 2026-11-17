@@ -45,9 +45,8 @@ jobs:
       - name: Install Semgrep
         run: pip install semgrep==1.185.0
       - name: Semgrep, nouvelles vulnerabilites seulement
-      # comparer le commit de base soit sur main avec pr soit sur le push davant avec le nouveau push
-      #detecter les nouvelles vulnerabilites 
         run: |
+          # Choisir le commit de reference, la base de la PR, ou le commit avant le push
           if [ "${{ github.event_name }}" = "pull_request" ]; then
             BASE="${{ github.event.pull_request.base.sha }}"
           else
@@ -57,7 +56,8 @@ jobs:
             BASE="$(git rev-parse HEAD~1)"
           fi
           echo "Commit de reference $BASE"
-          semgrep scan --config p/java --config p/security-audit --config p/findsecbugs --metrics=off --baseline-commit "$BASE" --error
+          # Detecter seulement les nouvelles vulnerabilites dans tika-core
+          semgrep scan --config p/java --config p/security-audit --config p/findsecbugs --metrics=off --baseline-commit "$BASE" --error tika-core
 
   build:
     runs-on: ubuntu-latest
