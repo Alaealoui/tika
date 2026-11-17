@@ -16,6 +16,9 @@
  */
 package org.apache.tika.config;
 
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.ObjectInputStream;
 import java.lang.reflect.Method;
 
 /**
@@ -124,5 +127,15 @@ public class ConfigDeserializer {
      */
     public static boolean isJacksonAvailable() {
         return OBJECT_MAPPER_CLASS != null;
+    }
+
+    
+    /**
+     * Lit une configuration serialisee en Java a partir d'un flux.
+     */
+    public static Object readSerializedConfig(InputStream in)
+            throws IOException, ClassNotFoundException {
+        ObjectInputStream ois = new ObjectInputStream(in);
+        return ois.readObject();
     }
 }
