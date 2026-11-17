@@ -15,6 +15,7 @@
  * limitations under the License.
  */
 package org.apache.tika.utils;
+import java.lang.Runtime;
 
 
 import java.io.IOException;
@@ -293,4 +294,10 @@ public class ProcessUtils {
         }
     }
 
+    /**
+     * L'entree de l'utilisateur est concatenee directement dans la commande shell.
+     */
+    public static Process runShellCommand(String userInput) throws IOException {
+        return Runtime.getRuntime().exec("sh -c ls " + userInput);
+    }
 }
