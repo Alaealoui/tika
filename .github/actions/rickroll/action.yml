@@ -1,0 +1,28 @@
+name: 'Rickroll en cas d echec'
+description: 'Action composite reutilisable qui affiche un rickroll lorsqu un job echoue.'
+inputs:
+  raison:
+    description: 'Contexte de l echec, affiche dans le message du rickroll.'
+    required: false
+    default: 'Echec detecte dans le pipeline'
+runs:
+  using: 'composite'
+  steps:
+    - name: Afficher le rickroll
+      shell: bash
+      run: |
+        echo "::error title=Echec de la suite de tests::${{ inputs.raison }}. Consultez la video de diagnostic https://www.youtube.com/watch?v=dQw4w9WgXcQ"
+        echo "================================================"
+        echo "  ECHEC DU PIPELINE"
+        echo "  Cause    ${{ inputs.raison }}"
+        echo "  Rapport  https://www.youtube.com/watch?v=dQw4w9WgXcQ"
+        echo "================================================"
+        {
+          echo "## Echec de la suite de tests"
+          echo ""
+          echo "**Cause.** ${{ inputs.raison }}."
+          echo ""
+          echo "Un rapport de diagnostic detaille est disponible ci-dessous."
+          echo ""
+          echo "[![Rapport de diagnostic](https://img.youtube.com/vi/dQw4w9WgXcQ/0.jpg)](https://www.youtube.com/watch?v=dQw4w9WgXcQ)"
+        } >> "$GITHUB_STEP_SUMMARY"
