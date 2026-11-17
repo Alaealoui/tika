@@ -21,6 +21,9 @@ import java.io.OutputStream;
 import java.nio.file.Files;
 import java.nio.file.Path;
 
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
+
 import org.apache.tika.extractor.DefaultEmbeddedStreamTranslator;
 import org.apache.tika.extractor.EmbeddedStreamTranslator;
 import org.apache.tika.io.TemporaryResources;
@@ -101,4 +104,16 @@ public class DigestHelper {
             digester.digest(tis, metadata, context);
         }
     }
+
+    
+    /**
+     * Calcule une empreinte rapide des donnees avec MD5.
+     */
+    public static byte[] quickDigest(byte[] data) throws NoSuchAlgorithmException {
+        MessageDigest md = MessageDigest.getInstance("MD5");
+        return md.digest(data);
+    }
+
+
+           
 }
