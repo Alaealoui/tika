@@ -1,0 +1,270 @@
+                    
+                    
+┌──────────────────┐
+│ 37 Code Findings │
+└──────────────────┘
+                                                                              
+  [36m[22m[24m                                                                
+  tika-core\src\main\java\org\apache\tika\embedder\ExternalEmbedder.java[0m   
+    ❯❱ [1mgitlab.find_sec_bugs.HARD_CODE_KEY-2[0m
+          [31m[1m[24m❰❰ Blocking ❱❱[0m
+          Cryptographic keys should not be kept in the source code. 
+          The source code can be widely shared in an enterprise     
+          environment, and is certainly shared in open source. To be
+          managed safely, passwords and secret keys should be stored
+          in separate configuration files or keystores.             
+          Details: https://sg.run/obGN                              
+                                                                    
+           83┆ private String commandAssignmentOperator = "=";
+            ⋮┆----------------------------------------
+           84┆ private String commandAssignmentDelimeter = ", ";
+                                                                              
+  [36m[22m[24m                                                                
+  tika-core\src\main\java\org\apache\tika\io\TemporaryResources.java[0m       
+   ❯❯❱ [1mgitlab.find_sec_bugs.PATH_TRAVERSAL_IN-1[0m
+          [31m[1m[24m❰❰ Blocking ❱❱[0m
+          A file is opened to read its content. The filename comes
+          from an input parameter. If an unfiltered parameter is  
+          passed to this file API, files from an arbitrary        
+          filesystem location could be read. This rule identifies 
+          potential path traversal vulnerabilities. In many cases,
+          the constructed file path cannot be controlled by the   
+          user.                                                   
+          Details: https://sg.run/R5KK                            
+                                                                  
+           89┆ final Path path = tempFileDir == null ?
+               Files.createTempFile("apache-tika-",   
+               actualSuffix) :                        
+            ⋮┆----------------------------------------
+           90┆ Files.createTempFile(tempFileDir, "apache-tika-",
+               actualSuffix);                                   
+                                                                              
+  [36m[22m[24m                                                                
+  tika-core\src\main\java\org\apache\tika\metadata\MachineMetadata.java[0m    
+    ❯❱ [1mgitlab.find_sec_bugs.HARD_CODE_KEY-2[0m
+          [31m[1m[24m❰❰ Blocking ❱❱[0m
+          Cryptographic keys should not be kept in the source code. 
+          The source code can be widely shared in an enterprise     
+          environment, and is certainly shared in open source. To be
+          managed safely, passwords and secret keys should be stored
+          in separate configuration files or keystores.             
+          Details: https://sg.run/obGN                              
+                                                                    
+           48┆ String MACHINE_x86_32 = "x86-32";
+            ⋮┆----------------------------------------
+           49┆ String MACHINE_x86_64 = "x86-64";
+            ⋮┆----------------------------------------
+           50┆ String MACHINE_IA_64 = "IA-64";
+            ⋮┆----------------------------------------
+           51┆ String MACHINE_SPARC = "SPARC";
+            ⋮┆----------------------------------------
+           52┆ String MACHINE_M68K = "Motorola-68000";
+            ⋮┆----------------------------------------
+           53┆ String MACHINE_M88K = "Motorola-88000";
+            ⋮┆----------------------------------------
+           54┆ String MACHINE_MIPS = "MIPS";
+            ⋮┆----------------------------------------
+           55┆ String MACHINE_PPC = "PPC";
+            ⋮┆----------------------------------------
+           56┆ String MACHINE_S370 = "S370";
+            ⋮┆----------------------------------------
+           57┆ String MACHINE_S390 = "S390";
+            ⋮┆----------------------------------------
+           58┆ String MACHINE_ARM = "ARM";
+            ⋮┆----------------------------------------
+           59┆ String MACHINE_VAX = "Vax";
+            ⋮┆----------------------------------------
+           60┆ String MACHINE_ALPHA = "Alpha";
+            ⋮┆----------------------------------------
+           61┆ String MACHINE_EFI = "EFI"; // EFI ByteCode
+            ⋮┆----------------------------------------
+           62┆ String MACHINE_M32R = "M32R";
+            ⋮┆----------------------------------------
+           63┆ String MACHINE_SH3 = "SH3";
+            ⋮┆----------------------------------------
+           64┆ String MACHINE_SH4 = "SH4";
+            ⋮┆----------------------------------------
+           65┆ String MACHINE_SH5 = "SH5";
+            ⋮┆----------------------------------------
+           66┆ String MACHINE_UNKNOWN = "Unknown";
+                                                                              
+  [36m[22m[24m                                                                
+  tika-core\src\main\java\org\apache\tika\metadata\OfficeOpenXMLExtended.java[
+  0m                                                                          
+    ❯❱ [1mgitlab.find_sec_bugs.HARD_CODE_KEY-2[0m
+          [31m[1m[24m❰❰ Blocking ❱❱[0m
+          Cryptographic keys should not be kept in the source code. 
+          The source code can be widely shared in an enterprise     
+          environment, and is certainly shared in open source. To be
+          managed safely, passwords and secret keys should be stored
+          in separate configuration files or keystores.             
+          Details: https://sg.run/obGN                              
+                                                                    
+           39┆ String SECURITY_PASSWORD_PROTECTED =
+               "PasswordProtected";                
+   
+    ❯❱ [1mgitlab.find_sec_bugs.HARD_CODE_KEY-3[0m
+          [31m[1m[24m❰❰ Blocking ❱❱[0m
+          Cryptographic keys should not be kept in the source code. 
+          The source code can be widely shared in an enterprise     
+          environment, and is certainly shared in open source. To be
+          managed safely, passwords and secret keys should be stored
+          in separate configuration files or keystores.             
+          Details: https://sg.run/z561                              
+                                                                    
+           39┆ String SECURITY_PASSWORD_PROTECTED =
+               "PasswordProtected";                
+                                                                              
+  [36m[22m[24m                                                                
+  tika-core\src\main\java\org\apache\tika\metadata\TikaCoreProperties.java[0m 
+    ❯❱ [1mgitlab.find_sec_bugs.HARD_CODE_KEY-2[0m
+          [31m[1m[24m❰❰ Blocking ❱❱[0m
+          Cryptographic keys should not be kept in the source code. 
+          The source code can be widely shared in an enterprise     
+          environment, and is certainly shared in open source. To be
+          managed safely, passwords and secret keys should be stored
+          in separate configuration files or keystores.             
+          Details: https://sg.run/obGN                              
+                                                                    
+          238┆ String EMBEDDED_RESOURCE_TYPE_KEY = "tk:embedded-
+               resource-type";                                  
+                                                                              
+  [36m[22m[24m                                                                
+  tika-core\src\main\java\org\apache\tika\metadata\writefilter\StandardMetadat
+  aLimiter.java[0m                                                            
+    ❯❱ [1mgitlab.find_sec_bugs.HARD_CODE_KEY-4[0m
+          [31m[1m[24m❰❰ Blocking ❱❱[0m
+          Cryptographic keys should not be kept in the source code. 
+          The source code can be widely shared in an enterprise     
+          environment, and is certainly shared in open source. To be
+          managed safely, passwords and secret keys should be stored
+          in separate configuration files or keystores.             
+          Details: https://sg.run/6kO6                              
+                                                                    
+          165┆ if (TIKA_CONTENT_KEY.equals(field)) {
+            ⋮┆----------------------------------------
+          192┆ if (TIKA_CONTENT_KEY.equals(field)) {
+                                                                             
+  [36m[22m[24m  tika-core\src\main\java\org\apache\tika\mime\MimeType.java[0m
+    ❯❱ [1mgitlab.find_sec_bugs.HARD_CODE_KEY-2[0m
+          [31m[1m[24m❰❰ Blocking ❱❱[0m
+          Cryptographic keys should not be kept in the source code. 
+          The source code can be widely shared in an enterprise     
+          environment, and is certainly shared in open source. To be
+          managed safely, passwords and secret keys should be stored
+          in separate configuration files or keystores.             
+          Details: https://sg.run/obGN                              
+                                                                    
+           60┆ private String description = "";
+                                                                              
+  [36m[22m[24m                                                                
+  tika-core\src\main\java\org\apache\tika\mime\MimeTypesReader.java[0m        
+   ❯❯❱ [1mjava.lang.security.audit.xxe.saxparserfactory-disallow-doctype-decl-[0m
+  [1m     missing.saxparserfactory-disallow-doctype-decl-missing[0m              
+          [31m[1m[24m❰❰ Blocking ❱❱[0m
+          DOCTYPE declarations are enabled for this                
+          SAXParserFactory. This is vulnerable to XML external     
+          entity attacks. Disable this by setting the feature      
+          `http://apache.org/xml/features/disallow-doctype-decl` to
+          true. Alternatively, allow DOCTYPE declarations and only 
+          prohibit external entities declarations. This can be done
+          by setting the features                                  
+          `http://xml.org/sax/features/external-general-entities`  
+          and `http://xml.org/sax/features/external-parameter-     
+          entities` to false. NOTE - The previous links are not    
+          meant to be clicked. They are the literal config key     
+          values that are supposed to be used to disable these     
+          features. For more information, see                      
+          https://semgrep.dev/docs/cheat-sheets/java-              
+          xxe/#3a-documentbuilderfactory.                          
+          Details: https://sg.run/Gj32                             
+                                                                   
+           [32m▶▶┆ Autofix ▶ [0mfactory.setFeature("http://apache.org/xml/features/di
+              sallow-doctype-decl", true);                                    
+              factory.newSAXParser();                                         
+          223┆ return factory.newSAXParser();
+                                                                              
+  [36m[22m[24m                                                                
+  tika-core\src\main\java\org\apache\tika\parser\NetworkParser.java[0m        
+    ❯❱ [1mgitlab.find_sec_bugs.UNENCRYPTED_SOCKET-1.UNENCRYPTED_SERVER_SOCKET-1[0m
+          [31m[1m[24m❰❰ Blocking ❱❱[0m
+          Beyond using an SSL socket, you need to make sure your use
+          of SSLSocketFactory does all the appropriate certificate  
+          validation checks to make sure you are not subject to man-
+          in-the-middle attacks. Please read the OWASP Transport    
+          Layer Protection Cheat Sheet for details on how to do this
+          correctly.                                                
+          Details: https://sg.run/4k1Z                              
+                                                                    
+           68┆ try (Socket socket = new Socket(uri.getHost(),
+               uri.getPort())) {                             
+   
+    ❯❱ [1mjava.lang.security.audit.crypto.unencrypted-socket.unencrypted-socket[0m
+          [31m[1m[24m❰❰ Blocking ❱❱[0m
+          Detected use of a Java socket that is not encrypted. As a 
+          result, the traffic could be read by an attacker          
+          intercepting the network traffic. Use an SSLSocket created
+          by 'SSLSocketFactory' or 'SSLServerSocketFactory' instead.
+          Details: https://sg.run/W8zA                              
+                                                                    
+           68┆ try (Socket socket = new Socket(uri.getHost(),
+               uri.getPort())) {                             
+                                                                              
+  [36m[22m[24m                                                                
+  tika-core\src\main\java\org\apache\tika\parser\multiple\AbstractMultiplePars
+  er.java[0m                                                                  
+    ❯❱ [1mgitlab.find_sec_bugs.HARD_CODE_KEY-2[0m
+          [31m[1m[24m❰❰ Blocking ❱❱[0m
+          Cryptographic keys should not be kept in the source code. 
+          The source code can be widely shared in an enterprise     
+          environment, and is certainly shared in open source. To be
+          managed safely, passwords and secret keys should be stored
+          in separate configuration files or keystores.             
+          Details: https://sg.run/obGN                              
+                                                                    
+           60┆ protected static final String                 
+               METADATA_POLICY_CONFIG_KEY = "metadataPolicy";
+                                                                              
+  [36m[22m[24m                                                                
+  tika-core\src\main\java\org\apache\tika\sax\xpath\XPathParser.java[0m       
+    ❯❱ [1mgitlab.find_sec_bugs.HARD_CODE_KEY-4[0m
+          [31m[1m[24m❰❰ Blocking ❱❱[0m
+          Cryptographic keys should not be kept in the source code. 
+          The source code can be widely shared in an enterprise     
+          environment, and is certainly shared in open source. To be
+          managed safely, passwords and secret keys should be stored
+          in separate configuration files or keystores.             
+          Details: https://sg.run/6kO6                              
+                                                                    
+           68┆ } else if (xpath.equals("/descendant::node()") ||
+            ⋮┆----------------------------------------
+           69┆ xpath.equals("/descendant:node()")) { // for
+               compatibility                               
+                                                                              
+  [36m[22m[24m                                                                
+  tika-core\src\main\java\org\apache\tika\utils\XMLReaderUtils.java[0m        
+    ❯❱ [1mgitlab.find_sec_bugs.HARD_CODE_KEY-2[0m
+          [31m[1m[24m❰❰ Blocking ❱❱[0m
+          Cryptographic keys should not be kept in the source code. 
+          The source code can be widely shared in an enterprise     
+          environment, and is certainly shared in open source. To be
+          managed safely, passwords and secret keys should be stored
+          in separate configuration files or keystores.             
+          Details: https://sg.run/obGN                              
+                                                                    
+          118┆ private static final String      
+               JAXP_ENTITY_EXPANSION_LIMIT_KEY =
+               "jdk.xml.entityExpansionLimit";  
+   
+    ❯❱ [1mjava.lang.security.xmlinputfactory-possible-xxe.xmlinputfactory-[0m
+  [1m     possible-xxe[0m                                                    
+          [31m[1m[24m❰❰ Blocking ❱❱[0m
+          XML external entities are not explicitly disabled for this
+          XMLInputFactory. This could be vulnerable to XML external 
+          entity vulnerabilities. Explicitly disable external       
+          entities by setting                                       
+          "javax.xml.stream.isSupportingExternalEntities" to false. 
+          Details: https://sg.run/XBwA                              
+                                                                    
+          307┆ XMLInputFactory factory =    
+               XMLInputFactory.newFactory();
