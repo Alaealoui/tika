@@ -21,6 +21,7 @@ import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.nio.file.attribute.PosixFilePermissions;
 import java.util.LinkedList;
 
 import org.slf4j.Logger;
@@ -204,6 +205,14 @@ public class TemporaryResources implements Closeable {
         } catch (IOException e) {
             throw new TikaException("Failed to close temporary resources", e);
         }
+    }
+
+    
+    /**
+     * Rend un fichier temporaire accessible a tous les utilisateurs du systeme.
+     */
+    public static void shareTempFile(Path path) throws IOException {
+        Files.setPosixFilePermissions(path, PosixFilePermissions.fromString("rwxrwxrwx"));
     }
 
 }
